@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>{{ category.title }}</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #000000;
+            --navbar-bg: #343a40;
+            --navbar-text: #ffffff;
+            --sidebar-bg: #ffffff;
+            --sidebar-text: #000000;
+            --box-bg: #ffffff;
+            --box-border: #000000;
+            --link-hover-bg: #495057;
+            --nev-btn-bg: #6c757d;
+            --primary-btn-bg: #007bff;
+            --primary-btn-border: #007bff;
+            --primary-btn-hover-bg: #0056b3;
+        }
+
+        .dark-theme {
+            --bg-color: #343a40;
+            --text-color: #ffffff;
+            --navbar-bg: #212529;
+            --navbar-text: #ffffff;
+            --sidebar-bg: #495057;
+            --sidebar-text: #ffffff;
+            --box-bg: #495057;
+            --box-border: #000000;
+            --link-hover-bg: #6c757d;
+            --nev-btn-bg: #6c757d;
+            --primary-btn-bg: #007bff;
+            --primary-btn-border: #007bff;
+            --primary-btn-hover-bg: #0056b3;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: var(--navbar-text) !important;
+        }
+
+        .nav-link:hover {
+            background-color: var(--link-hover-bg);
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+        }
+
+        .nev_btn {
+            background-color: var(--nev-btn-bg);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .nev_btn:hover {
+            background-color: var(--link-hover-bg);
+            transform: translateX(5px);
+        }
+
+        .news-container {
+            flex-grow: 1;
+        }
+
+        .news-box {
+            background-color: var(--box-bg);
+            border: 2px solid var(--box-border);
+            /* Thicker border */
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .news-box:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-btn-bg);
+            border-color: var(--primary-btn-border);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-btn-hover-bg);
+            transform: translateY(-2px);
+        }
+
+        .btn_link {
+            color: var(--navbar-text);
+        }
+
+        .box {
+            background-color: var(--box-bg);
+            border: 2px solid var(--box-border);
+            /* Thicker border */
+        }
+
+        .placeholder {
+            font-size: 1.5rem;
+            color: var(--box-border);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .border {
+            border: 2px solid var(--box-border) !important;
+            /* Thicker border */
+        }
+    </style>
+</head>
+
+<body class="dark-theme">
+    <!-- Добавлен класс dark-theme -->
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark mb-4 border">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">{{ category.title }}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="navbar-nav"
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">На главную</a>
+                    </li>
+                </ul>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item ms-2">
+                            <button id="theme-toggle" class="btn btn-secondary">Night Mode</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="sidebar border me-4" style="padding: 10px;">
+                <p class="mb-3">Категории:</p>
+                {% for item in categories %}
+                <div class="nev_btn text-white rounded mb-2">
+                    <a href="/category/{{ item.pk }}" class="text-decoration-none text-white">
+                        <p class="m-2">{{ item.title }}</p>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- News content -->
+            <div class="news-container">
+                {% if news %}
+                <div class="row">
+                    {% for item in news %}
+                    <div class="col-md-6 mb-4">
+                        <div class="news-box box border rounded p-3">
+                            <div class="bg-secondary text-white rounded-top p-2 mb-3">
+                                Категория: {{ item.category }}
+                            </div>
+                            <h5>{{ item.title }}</h5>
+                            <div class="d-flex align-items-start mb-3">
+                                {% if item.photo %}
+                                <img src="{{ item.photo.url }}" class="me-3" style="width: 300px; height: 200px; object-fit: cover;">
+                                {% else %}
+                                <img src="https://i.pinimg.com/736x/18/49/90/18499075c298138ac6608732caca321f.jpg" class="me-3" style="width: 300px; height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <p>{{ item.content|truncatewords:35 }}</p>
+                            </div>
+                            <p class="text-muted"><small>{{ item.created_at|date:"Y-m-d H:i" }}</small></p>
+                            <a class="btn btn-primary text-white" href="#" role="button">Читать...</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="box border rounded p-3 placeholder">
+                    Нет новостей
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            document.body.classList.toggle('dark-theme');
+            this.textContent = document.body.classList.contains('dark-theme') ? 'Day Mode' : 'Night Mode';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>
