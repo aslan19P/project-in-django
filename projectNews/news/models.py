@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 # Create your models here.
 class News(models.Model):
@@ -12,6 +14,10 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+    
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'category_id': self.pk}) ## тут мы создали метод объекта нашей модели и вернули метод reverse c двумя аргументами, в первом аргументе мы передаем имя ссылки и вторым аргументом kwargs мы создаем словарь берем category_id и присваеваем pk нашего обьекта модели.
 
     class Meta:
         verbose_name = 'Новость'
